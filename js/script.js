@@ -1,4 +1,4 @@
-const storageContainer = document.querySelector(".storage-container");
+const storageContainerEL = document.querySelector(".storage-container");
 const prevOperationEl = document.querySelector(".previous-operation");
 const currentOperationInput = document.querySelector(".current-operation");
 
@@ -44,7 +44,6 @@ class CalculatorApp {
 
   compute() {
     let computation;
-    console.log(this.prevOperation);
     const prev = parseFloat(this.previousOperation);
     const current = parseFloat(this.currentOperation);
     console.log(prev, current);
@@ -62,12 +61,16 @@ class CalculatorApp {
       case "÷":
         computation = prev / current;
         break;
+      case "%":
+        computation = prev % current;
+        break;
       default:
         return;
     }
     this.currentOperation = computation;
     this.operation = undefined;
     this.previousOperation = "";
+    // this.currentOperationInput.value = "";
   }
 
   updateDisplay() {
@@ -107,4 +110,45 @@ clearButton.addEventListener("click", function () {
 deleteButton.addEventListener("click", function () {
   calculator.delete();
   calculator.updateDisplay();
+});
+
+document.addEventListener("keydown", function (e) {
+  console.log(e.key);
+
+  switch (e.key) {
+    case "Enter":
+      e.preventDefault();
+      calculator.compute();
+      calculator.updateDisplay();
+      break;
+    case ".":
+    case "0":
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+      calculator.displayNumber(e.key);
+      break;
+    case "+":
+    case "-":
+    case "x":
+    case "%":
+      calculator.chooseOperation(e.key);
+      break;
+    case "/":
+      calculator.chooseOperation("÷");
+      break;
+    case "=":
+      calculator.compute();
+      calculator.updateDisplay();
+
+      break;
+    default:
+      return;
+  }
 });
