@@ -10,10 +10,13 @@ const numberSquaredButton = document.querySelector(".btn-square");
 const squareRootButton = document.querySelector(".btn-square-root");
 const equalsButton = document.querySelector(".btn-equals");
 
+console.log(storageContainerEL);
+
 class CalculatorApp {
-  constructor(prevOperationEl, currentOperationInput) {
+  constructor(prevOperationEl, currentOperationInput, storageContainerEL) {
     this.prevOperationEl = prevOperationEl;
     this.currentOperationInput = currentOperationInput;
+    this.storageContainerEL = storageContainerEL;
     this.clear();
   }
 
@@ -68,6 +71,7 @@ class CalculatorApp {
         return;
     }
     this.currentOperation = computation;
+    this.storageContainerEL.innerText = `${prev} ${this.operation} ${current} = ${this.currentOperation}`;
     this.operation = undefined;
     this.previousOperation = "";
     // this.currentOperationInput.value = "";
@@ -79,7 +83,11 @@ class CalculatorApp {
   }
 }
 
-const calculator = new CalculatorApp(prevOperationEl, currentOperationInput);
+const calculator = new CalculatorApp(
+  prevOperationEl,
+  currentOperationInput,
+  storageContainerEL
+);
 console.log(calculator);
 
 numberButtons.forEach((button) => {
