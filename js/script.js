@@ -10,8 +10,6 @@ const numberSquaredButton = document.querySelector(".btn-square");
 const squareRootButton = document.querySelector(".btn-square-root");
 const equalsButton = document.querySelector(".btn-equals");
 
-console.log(storageContainerEL);
-
 class CalculatorApp {
   constructor(prevOperationEl, currentOperationInput, storageContainerEL) {
     this.prevOperationEl = prevOperationEl;
@@ -43,6 +41,8 @@ class CalculatorApp {
     this.operation = operation;
     this.previousOperation = this.currentOperation;
     this.currentOperation = "";
+
+    console.log(operation);
   }
 
   compute() {
@@ -50,31 +50,53 @@ class CalculatorApp {
     const prev = parseFloat(this.previousOperation);
     const current = parseFloat(this.currentOperation);
     console.log(prev, current);
-    if (isNaN(prev) || isNaN(current)) return;
-    switch (this.operation) {
-      case "+":
-        computation = prev + current;
-        break;
-      case "-":
-        computation = prev - current;
-        break;
-      case "x":
-        computation = prev * current;
-        break;
-      case "÷":
-        computation = prev / current;
-        break;
-      case "%":
-        computation = prev % current;
-        break;
-      default:
-        return;
-    }
+    if (isNaN(prev) || isNaN(current)) {
+      switch (this.operation) {
+        case "x2":
+          computation = prev ** 2;
+          console.log(computation);
+          break;
+        case "√":
+          computation = Math.sqrt(current);
+          console.log(computation);
+
+          break;
+        default:
+          return;
+      }
+    } else
+      switch (this.operation) {
+        case "+":
+          computation = prev + current;
+          break;
+        case "-":
+          computation = prev - current;
+          break;
+        case "x":
+          computation = prev * current;
+          break;
+        case "÷":
+          computation = prev / current;
+          break;
+        case "%":
+          computation = prev % current;
+          break;
+
+        default:
+          return;
+      }
+
     this.currentOperation = computation;
     this.storageContainerEL.innerText = `${prev} ${this.operation} ${current} = ${this.currentOperation}`;
     this.operation = undefined;
     this.previousOperation = "";
     // this.currentOperationInput.value = "";
+  }
+
+  squareNumber(number) {
+    let answer = number ** 2;
+    this.currentOperation = answer;
+    this.storageContainerEL.innerHTML = `<p> ${number} <sup>2</sup> = ${this.currentOperation}</p>`;
   }
 
   updateDisplay() {
@@ -120,6 +142,11 @@ deleteButton.addEventListener("click", function () {
   calculator.updateDisplay();
 });
 
+// numberSquaredButton.addEventListener("click", function () {
+//   calculator.squareNumber();
+//   calculator.updateDisplay();
+// });
+
 document.addEventListener("keydown", function (e) {
   console.log(e.key);
 
@@ -154,7 +181,10 @@ document.addEventListener("keydown", function (e) {
     case "=":
       calculator.compute();
       calculator.updateDisplay();
-
+      break;
+    case "Backspace":
+      calculator.delete();
+      calculator.updateDisplay();
       break;
     default:
       return;

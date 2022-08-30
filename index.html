@@ -12,9 +12,9 @@
     
     <div class="container h-full px-4 py-5 bg-slate-500 md:rounded-2xl md:px-8">
         <div class="calculator h-full flex flex-col justify-between">
-            <div class="storage-container text-center text-white tracking-wide text-2xl py-6 pb-0 h-28 border-b border-gray-400 md:h-24">storage container</div>
+            <div class="storage-container text-center text-white tracking-wide text-2xl py-6 pb-0 h-28 border-b border-gray-400 md:h-24 break-all">storage container</div>
 
-            <div class="display-bar">
+            <div class="display-bar break-all">
                 <div class="previous-operation py-1 text-lg text-white text-right md:pt-3"></div>
                 <div class="p-1 border-b border-gray-400">
                     <input type="text" name="current-operation" id="current-operation" class="current-operation text-right w-full h-12 bg-transparent text-white tracking-wide text-2xl focus:outline-none">
@@ -37,8 +37,8 @@
                 <button type="button" class="btn btn-number">2</button>
                 <button type="button" class="btn btn-number">3</button>
                 <button type="button" class="btn btn-operator">-</button>
-                <button type="button" class="btn btn-square">x<sup>2</sup></button>
-                <button type="button" class="btn btn-square-root">&Sqrt;</button>
+                <button type="button" class="btn btn-operator btn-square">x<sup>2</sup></button>
+                <button type="button" class="btn btn-operator btn-square-root">&Sqrt;</button>
                 <button type="button" class="btn btn-number">0</button>
                 <button type="button" class="btn btn-number">.</button>
                 <button type="button" class="btn btn-operator">%</button>
