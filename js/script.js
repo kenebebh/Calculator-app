@@ -6,10 +6,7 @@ const clearButton = document.querySelector(".btn-all-clear");
 const deleteButton = document.querySelector(".btn-delete");
 const numberSquaredButton = document.querySelector(".btn-square");
 const squareRootButton = document.querySelector(".btn-square-root");
-const equalsButton = document.querySelector(".btn-equals");
-let prevOperand, currOperand;
-
-console.log(numberSquaredButton.innerText, squareRootButton.innerHTML);
+const equalsButton = document.querySelector(".btn-all-equals");
 
 class CalculatorApp {
   constructor() {
@@ -21,40 +18,34 @@ class CalculatorApp {
   // }
 
   displayNumber(number) {
-    if (number === "." && displayBar.value.includes(".")) return;
     displayBar.value += number;
   }
 
-  setOperation(operation) {
+  chooseOperation(operation) {
+    if (this.currentOperand === "") return;
+    if (this.previousOperand !== "") {
+      this.compute();
+    }
     this.operation = operation;
-    this.compute();
+    this.previousOperand = this.currentOperand;
+    this.currentOperand = "";
   }
 
-  //   chooseOperation(operation) {
-  //     this.compute();
-  //   }
-
   compute() {
-    let computed;
-    const calcthis = displayBar.value;
-    const splitString = calcthis.match(/(?:\d+\.)?\d+/g);
-    prevOperand = parseFloat(splitString[0]);
-    currOperand = parseFloat(splitString[1]);
+    let computation;
+
     switch (this.operation) {
       case "+":
-        console.log(`Add`);
-        computed = prevOperand + currOperand;
-        console.log(computed);
-        prevOperand = computed;
+        console.log(Add);
         break;
       case "-":
-        console.log(`Subtract`);
+        console.log(Subtract);
         break;
       case "x":
-        console.log(`Multiply`);
+        console.log(Multiply);
         break;
       case "÷":
-        console.log(`Divide`);
+        console.log(Divide);
         break;
       default:
         return;
@@ -72,12 +63,7 @@ numberButtons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    calculator.setOperation(button.innerText);
-    // calculator.compute(button.innerText);
+    calculator.chooseOperation(button.innerText);
     calculator.displayNumber(button.innerText);
   });
-});
-
-equalsButton.addEventListener("click", function () {
-  calculator.compute();
 });
