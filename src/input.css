@@ -2,7 +2,7 @@
 @tailwind components;
 
 .btn {
-  @apply bg-slate-400 text-white leading-6 font-medium py-2 px-3 rounded-lg;
+  @apply bg-slate-400 text-white leading-6 font-medium py-3 px-4 rounded-lg;
 }
 .btn:hover {
   @apply bg-gray-500 scale-105;
@@ -14,6 +14,12 @@
   @apply translate-y-px;
 }
 
+@screen md {
+  .btn {
+    @apply py-2 px-3;
+  }
+}
+
 @tailwind utilities;
 
 html {
@@ -22,6 +28,9 @@ html {
 body {
   @apply h-full;
   @apply w-full;
+}
+.container {
+  @apply h-full;
 }
 
 .span-2 {

@@ -8,15 +8,19 @@
     <title>My Calculator</title>
     <script src="js/script.js" defer></script>
 </head>
-<body class="grid place-content-center">
+<body class="grid bg-red-100 md:place-content-center">
     
-    <div class="container px-9 py-5 pb-10 bg-slate-500 rounded-2xl">
-        <div class="calculator flex flex-col">
-            <div class="storage-container text-center py-6 pb-3 h-24 border-b border-gray-400">storage container</div>
-            <div class="text-right p-1 border-b border-gray-400">
-                <input type="text" name="display-bar" id="display-bar" class="display-bar w-full h-12 bg-transparent text-white tracking-wide text-2xl focus:outline-none">
+    <div class="container h-full px-4 py-5 pb-10 bg-slate-500 rounded-2xl md:px-8">
+        <div class="calculator h-full flex flex-col justify-around">
+            <div class="storage-container text-center py-6 pb-3 h-32 border-b border-gray-400 md:h-28">storage container</div>
+
+            <div class="display-bar">
+                <div class="previous-operation py-1 text-lg text-white text-right md:pt-3">123 +</div>
+                <div class="p-1 border-b border-gray-400">
+                    <input type="text" name="current-operation" id="current-operation" class="text-right display-bar w-full h-12 bg-transparent text-white tracking-wide text-2xl focus:outline-none">
+                </div>
             </div>
-            <div class="keys-container py-6 grid grid-cols-6 gap-y-4 gap-x-2 transition-all">
+            <div class="keys-container py-6 grid grid-cols-6 gap-y-6 gap-x-3 transition-all">
                 <button type="button" class="btn btn-number">7</button>
                 <button type="button" class="btn btn-number">8</button>
                 <button type="button" class="btn btn-number">9</button>

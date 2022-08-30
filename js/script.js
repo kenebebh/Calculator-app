@@ -1,5 +1,7 @@
 const storageContainer = document.querySelector(".storage-container");
 const displayBar = document.querySelector(".display-bar");
+const currentOperation = document.querySelector(".current-operation");
+
 const numberButtons = document.querySelectorAll(".btn-number");
 const operatorButtons = document.querySelectorAll(".btn-operator");
 const clearButton = document.querySelector(".btn-all-clear");
@@ -14,11 +16,11 @@ class CalculatorApp {
   }
 
   // clear() {
-  //     displayBar.value = ''
+  //     currentOperation.value = ''
   // }
 
   displayNumber(number) {
-    displayBar.value += number;
+    currentOperation.value += number;
   }
 
   chooseOperation(operation) {
