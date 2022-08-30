@@ -1,5 +1,5 @@
 const storageContainer = document.querySelector(".storage-container");
-const displayBar = document.querySelector(".display-bar");
+const prevOperation = document.querySelector(".previous-operation");
 const currentOperation = document.querySelector(".current-operation");
 
 const numberButtons = document.querySelectorAll(".btn-number");
