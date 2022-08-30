@@ -646,6 +646,10 @@ video {
   height: 3rem;
 }
 
+.h-28 {
+  height: 7rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -795,8 +799,16 @@ body {
     height: 7rem;
   }
 
+  .md\:h-24 {
+    height: 6rem;
+  }
+
   .md\:place-content-center {
     place-content: center;
+  }
+
+  .md\:rounded-2xl {
+    border-radius: 1rem;
   }
 
   .md\:px-8 {
