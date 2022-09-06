@@ -11,8 +11,7 @@ const squareRootButton = document.querySelector(".btn-square-root");
 const equalsButton = document.querySelector(".btn-equals");
 
 class CalculatorApp {
-  constructor(prevOperationEl, currentOperationInput, storageContainerEL) {
-    this.prevOperationEl = prevOperationEl;
+  constructor(currentOperationInput, storageContainerEL) {
     this.currentOperationInput = currentOperationInput;
     this.storageContainerEL = storageContainerEL;
     this.clear();
@@ -20,7 +19,6 @@ class CalculatorApp {
 
   clear() {
     this.currentOperation = "";
-    this.previousOperation = "";
     this.operation = undefined;
   }
 
@@ -34,82 +32,23 @@ class CalculatorApp {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === "") return;
-    if (this.previousOperand !== "") {
-      this.compute();
-    }
+    if (this.currentOperationInput === "") return;
+    this.currentOperation += operation;
     this.operation = operation;
-    this.previousOperation = this.currentOperation;
-    this.currentOperation = "";
-
-    console.log(operation);
   }
 
   compute() {
-    let computation;
-    const prev = parseFloat(this.previousOperation);
-    const current = parseFloat(this.currentOperation);
-    console.log(prev, current);
-    if (isNaN(prev) || isNaN(current)) {
-      switch (this.operation) {
-        case "x2":
-          computation = prev ** 2;
-          console.log(computation);
-          break;
-        case "√":
-          computation = Math.sqrt(current);
-          console.log(computation);
+    const result = eval(this.currentOperation);
 
-          break;
-        default:
-          return;
-      }
-    } else
-      switch (this.operation) {
-        case "+":
-          computation = prev + current;
-          break;
-        case "-":
-          computation = prev - current;
-          break;
-        case "x":
-          computation = prev * current;
-          break;
-        case "÷":
-          computation = prev / current;
-          break;
-        case "%":
-          computation = prev % current;
-          break;
-
-        default:
-          return;
-      }
-
-    this.currentOperation = computation;
-    this.storageContainerEL.innerText = `${prev} ${this.operation} ${current} = ${this.currentOperation}`;
-    this.operation = undefined;
-    this.previousOperation = "";
-    // this.currentOperationInput.value = "";
-  }
-
-  squareNumber(number) {
-    let answer = number ** 2;
-    this.currentOperation = answer;
-    this.storageContainerEL.innerHTML = `<p> ${number} <sup>2</sup> = ${this.currentOperation}</p>`;
+    console.log(result);
   }
 
   updateDisplay() {
     this.currentOperationInput.value = this.currentOperation;
-    this.prevOperationEl.innerText = this.previousOperation;
   }
 }
 
-const calculator = new CalculatorApp(
-  prevOperationEl,
-  currentOperationInput,
-  storageContainerEL
-);
+const calculator = new CalculatorApp(currentOperationInput, storageContainerEL);
 console.log(calculator);
 
 numberButtons.forEach((button) => {
@@ -142,11 +81,6 @@ deleteButton.addEventListener("click", function () {
   calculator.updateDisplay();
 });
 
-// numberSquaredButton.addEventListener("click", function () {
-//   calculator.squareNumber();
-//   calculator.updateDisplay();
-// });
-
 document.addEventListener("keydown", function (e) {
   console.log(e.key);
 
@@ -173,10 +107,8 @@ document.addEventListener("keydown", function (e) {
     case "-":
     case "x":
     case "%":
-      calculator.chooseOperation(e.key);
-      break;
     case "/":
-      calculator.chooseOperation("÷");
+      calculator.chooseOperation(e.key);
       break;
     case "=":
       calculator.compute();
