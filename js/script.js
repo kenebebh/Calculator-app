@@ -1,115 +1,111 @@
 const storageContainerEL = document.querySelector(".storage-container");
-const prevOperationEl = document.querySelector(".previous-operation");
 const currentOperationInput = document.querySelector(".current-operation");
 
 const numberButtons = document.querySelectorAll(".btn-number");
 const operatorButtons = document.querySelectorAll(".btn-operator");
 const clearButton = document.querySelector(".btn-all-clear");
 const deleteButton = document.querySelector(".btn-delete");
-const numberSquaredButton = document.querySelector(".btn-square");
-const squareRootButton = document.querySelector(".btn-square-root");
 const equalsButton = document.querySelector(".btn-equals");
 
 class CalculatorApp {
-  constructor(prevOperationEl, currentOperationInput, storageContainerEL) {
-    this.prevOperationEl = prevOperationEl;
+  #result;
+  #operandStore;
+  #answerStore;
+
+  constructor(currentOperationInput, storageContainerEL) {
     this.currentOperationInput = currentOperationInput;
     this.storageContainerEL = storageContainerEL;
     this.clear();
   }
 
   clear() {
-    this.currentOperation = "";
-    this.previousOperation = "";
+    this.currentOperand = "";
     this.operation = undefined;
   }
 
   delete() {
-    this.currentOperation = this.currentOperation.toString().slice(0, -1);
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
   }
 
   displayNumber(number) {
-    if (number === "." && this.currentOperation.includes(".")) return;
-    this.currentOperation += number;
+    if (number === "." && this.currentOperand.includes(".")) return;
+    this.currentOperand += number;
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === "") return;
-    if (this.previousOperand !== "") {
-      this.compute();
-    }
+    if (this.currentOperationInput === "") return;
     this.operation = operation;
-    this.previousOperation = this.currentOperation;
-    this.currentOperation = "";
 
-    console.log(operation);
+    switch (this.operation) {
+      case "x2":
+        // if theres no number before the user presses the square button, return
+        if (this.currentOperand.split(/[\+\-\/\*\^\%]/g) == "") return;
+        this.currentOperand += "**2";
+        // //Here, I create an array, I use this array to get the last value before you pressed the square operation, incase there isnt only one operand to be calculated
+        // let getNumber = this.currentOperand.toString().split(/[\+\-\/\*\^\%]/g);
+        // if (getNumber.length == "1") {
+        //   this.#result = this.currentOperand ** 2;
+        //   // this.displayResult();
+        // } else if (getNumber.length > "1") {
+        //   let numberToSquare = getNumber[getNumber.length - 1];
+        //   let numberSquared = numberToSquare ** 2;
+        //   console.log(numberSquared);
+        // }
+        // console.log(getNumber);
+        break;
+      case "√":
+        this.currentOperand += operation;
+        break;
+      case "+":
+      case "-":
+      case "*":
+      case "/":
+      case "%":
+        if (/[0-9()]/.test(this.currentOperand.toString().slice(-1))) {
+          this.currentOperand += operation;
+        }
+        break;
+      default:
+        return;
+    }
   }
 
   compute() {
-    let computation;
-    const prev = parseFloat(this.previousOperation);
-    const current = parseFloat(this.currentOperation);
-    console.log(prev, current);
-    if (isNaN(prev) || isNaN(current)) {
-      switch (this.operation) {
-        case "x2":
-          computation = prev ** 2;
-          console.log(computation);
-          break;
-        case "√":
-          computation = Math.sqrt(current);
-          console.log(computation);
+    if (this.operation === "√") {
+      this.currentOperand = this.currentOperand.toString().slice(1);
+      this.#result = Math.sqrt(this.currentOperand);
+    } else {
+      this.#result = eval(this.currentOperand);
+    }
 
-          break;
-        default:
-          return;
-      }
-    } else
-      switch (this.operation) {
-        case "+":
-          computation = prev + current;
-          break;
-        case "-":
-          computation = prev - current;
-          break;
-        case "x":
-          computation = prev * current;
-          break;
-        case "÷":
-          computation = prev / current;
-          break;
-        case "%":
-          computation = prev % current;
-          break;
-
-        default:
-          return;
-      }
-
-    this.currentOperation = computation;
-    this.storageContainerEL.innerText = `${prev} ${this.operation} ${current} = ${this.currentOperation}`;
-    this.operation = undefined;
-    this.previousOperation = "";
-    // this.currentOperationInput.value = "";
+    this.#operandStore = this.currentOperand;
+    this.#answerStore = this.#result;
+    this.currentOperand = this.#result;
   }
 
-  squareNumber(number) {
-    let answer = number ** 2;
-    this.currentOperation = answer;
-    this.storageContainerEL.innerHTML = `<p> ${number} <sup>2</sup> = ${this.currentOperation}</p>`;
+  formatNumber(number) {
+    const floatNumber = parseFloat(number);
+    if (isNaN(floatNumber)) return;
+    return floatNumber.toLocaleString(navigator.language);
   }
 
   updateDisplay() {
-    this.currentOperationInput.value = this.currentOperation;
-    this.prevOperationEl.innerText = this.previousOperation;
+    this.currentOperationInput.value = this.currentOperand;
+  }
+
+  displayResult() {
+    const html = `
+    <div class="storage-elements flex justify-between">
+      <div class="leftside">${this.#operandStore}</div>
+      <div class="rightside"> = ${this.#answerStore}</div>
+      </div> 
+    `;
+    this.currentOperationInput.value = this.formatNumber(this.#result);
+    this.storageContainerEL.insertAdjacentHTML("beforeend", html);
   }
 }
 
-const calculator = new CalculatorApp(
-  prevOperationEl,
-  currentOperationInput,
-  storageContainerEL
-);
+const calculator = new CalculatorApp(currentOperationInput, storageContainerEL);
 console.log(calculator);
 
 numberButtons.forEach((button) => {
@@ -122,7 +118,6 @@ numberButtons.forEach((button) => {
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.chooseOperation(button.innerText);
-    // calculator.displayNumber(button.innerText);
     calculator.updateDisplay();
   });
 });
@@ -130,6 +125,7 @@ operatorButtons.forEach((button) => {
 equalsButton.addEventListener("click", function () {
   calculator.compute();
   calculator.updateDisplay();
+  calculator.displayResult();
 });
 
 clearButton.addEventListener("click", function () {
@@ -142,11 +138,6 @@ deleteButton.addEventListener("click", function () {
   calculator.updateDisplay();
 });
 
-// numberSquaredButton.addEventListener("click", function () {
-//   calculator.squareNumber();
-//   calculator.updateDisplay();
-// });
-
 document.addEventListener("keydown", function (e) {
   console.log(e.key);
 
@@ -155,6 +146,8 @@ document.addEventListener("keydown", function (e) {
       e.preventDefault();
       calculator.compute();
       calculator.updateDisplay();
+      calculator.displayResult();
+
       break;
     case ".":
     case "0":
@@ -173,10 +166,8 @@ document.addEventListener("keydown", function (e) {
     case "-":
     case "x":
     case "%":
-      calculator.chooseOperation(e.key);
-      break;
     case "/":
-      calculator.chooseOperation("÷");
+      calculator.chooseOperation(e.key);
       break;
     case "=":
       calculator.compute();
