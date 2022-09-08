@@ -91,7 +91,8 @@ class CalculatorApp {
     const html = `
     <div class="storage-elements flex justify-between">
       <div class="leftside">${this.#operandStore}</div>
-      <div class="rightside"> = ${this.#answerStore}</div>
+      <div class="center">=</div>
+      <div class="rightside">${this.#answerStore}</div>
       </div> 
     `;
     this.currentOperationInput.value = this.formatNumber(this.#result);
