@@ -9,6 +9,8 @@ const equalsButton = document.querySelector(".btn-equals");
 
 class CalculatorApp {
   #result;
+  #operandStore;
+  #answerStore;
 
   constructor(currentOperationInput, storageContainerEL) {
     this.currentOperationInput = currentOperationInput;
@@ -72,17 +74,13 @@ class CalculatorApp {
     if (this.operation === "√") {
       this.currentOperand = this.currentOperand.toString().slice(1);
       this.#result = Math.sqrt(this.currentOperand);
-      console.log(this.#result);
     } else {
       this.#result = eval(this.currentOperand);
-      console.log(typeof this.#result);
-      // let splitted = kene.split(/[+]/);
-      // console.log(splitted);
-      console.log(this.currentOperand.split(/[\+\-\/\*\^\%]/g));
     }
 
+    this.#operandStore = this.currentOperand;
+    this.#answerStore = this.#result;
     this.currentOperand = this.#result;
-    console.log(this.#result);
   }
 
   formatNumber(number) {
@@ -92,13 +90,18 @@ class CalculatorApp {
   }
 
   updateDisplay() {
-    // this.currentOperationInput.value = this.formatNumber(this.currentOperand);
     this.currentOperationInput.value = this.currentOperand;
   }
 
   displayResult() {
-    this.currentOperand = this.#result;
-    this.currentOperationInput.value = this.formatNumber(this.currentOperand);
+    const html = `
+    <div class="storage-elements flex justify-between">
+      <div class="leftside">${this.#operandStore}</div>
+      <div class="rightside"> = ${this.#answerStore}</div>
+      </div> 
+    `;
+    this.currentOperationInput.value = this.formatNumber(this.#result);
+    this.storageContainerEL.insertAdjacentHTML("beforeend", html);
   }
 }
 
@@ -143,6 +146,8 @@ document.addEventListener("keydown", function (e) {
       e.preventDefault();
       calculator.compute();
       calculator.updateDisplay();
+      calculator.displayResult();
+
       break;
     case ".":
     case "0":

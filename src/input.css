@@ -36,3 +36,8 @@ body {
 .span-2 {
   grid-column: span 2;
 }
+
+.storage-container {
+  /* overflow-y: scroll; */
+  overflow: auto;
+}
