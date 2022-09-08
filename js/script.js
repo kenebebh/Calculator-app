@@ -1,3 +1,4 @@
+"use strict";
 const storageContainerEL = document.querySelector(".storage-container");
 const currentOperationInput = document.querySelector(".current-operation");
 
@@ -8,10 +9,13 @@ const deleteButton = document.querySelector(".btn-delete");
 const equalsButton = document.querySelector(".btn-equals");
 
 class CalculatorApp {
+  // declaring our private fields
+  // we would later use these fields to store important data in our calculator app
   #result;
   #operandStore;
   #answerStore;
 
+  // The values we pass into the constructor function are values that are passed in the object that inherits this class, which we can then store the value in this class function and from there perform operations the passed in values
   constructor(currentOperationInput, storageContainerEL) {
     this.currentOperationInput = currentOperationInput;
     this.storageContainerEL = storageContainerEL;
@@ -50,6 +54,7 @@ class CalculatorApp {
       case "*":
       case "/":
       case "%":
+        // this tests if the number before the operator key is pressed is a number or a parentheses, and if it is, then we display the operator
         if (/[0-9()]/.test(this.currentOperand.toString().slice(-1))) {
           this.currentOperand += operation;
         }
@@ -94,6 +99,7 @@ class CalculatorApp {
   }
 }
 
+// Creating our calculator object from the class
 const calculator = new CalculatorApp(currentOperationInput, storageContainerEL);
 console.log(calculator);
 
@@ -127,6 +133,7 @@ deleteButton.addEventListener("click", function () {
   calculator.updateDisplay();
 });
 
+// This is an event listener to the whole document so we could also operate the calculator using our keyboard
 document.addEventListener("keydown", function (e) {
   console.log(e.key);
 
