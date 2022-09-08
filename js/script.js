@@ -17,17 +17,17 @@ class CalculatorApp {
   }
 
   clear() {
-    this.currentOperation = "";
+    this.currentOperand = "";
     this.operation = undefined;
   }
 
   delete() {
-    this.currentOperation = this.currentOperation.toString().slice(0, -1);
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
   }
 
   displayNumber(number) {
-    if (number === "." && this.currentOperation.includes(".")) return;
-    this.currentOperation += number;
+    if (number === "." && this.currentOperand.includes(".")) return;
+    this.currentOperand += number;
   }
 
   chooseOperation(operation) {
@@ -36,18 +36,32 @@ class CalculatorApp {
 
     switch (this.operation) {
       case "x2":
-        this.#result = this.currentOperation ** 2;
-        this.displayResult();
+        // if theres no number before the user presses the square button, return
+        if (this.currentOperand.split(/[\+\-\/\*\^\%]/g) == "") return;
+        this.currentOperand += "**2";
+        // //Here, I create an array, I use this array to get the last value before you pressed the square operation, incase there isnt only one operand to be calculated
+        // let getNumber = this.currentOperand.toString().split(/[\+\-\/\*\^\%]/g);
+        // if (getNumber.length == "1") {
+        //   this.#result = this.currentOperand ** 2;
+        //   // this.displayResult();
+        // } else if (getNumber.length > "1") {
+        //   let numberToSquare = getNumber[getNumber.length - 1];
+        //   let numberSquared = numberToSquare ** 2;
+        //   console.log(numberSquared);
+        // }
+        // console.log(getNumber);
         break;
       case "√":
+        this.currentOperand += operation;
+        break;
       case "+":
       case "-":
       case "*":
       case "/":
       case "%":
-        console.log(typeof Number(this.currentOperation.slice(-1)));
-        if (isNaN(this.currentOperation.slice(-1))) return;
-        this.currentOperation += operation;
+        if (/[0-9()]/.test(this.currentOperand.toString().slice(-1))) {
+          this.currentOperand += operation;
+        }
         break;
       default:
         return;
@@ -56,23 +70,35 @@ class CalculatorApp {
 
   compute() {
     if (this.operation === "√") {
-      this.currentOperation = this.currentOperation.toString().slice(1);
-      this.#result = Math.sqrt(this.currentOperation);
+      this.currentOperand = this.currentOperand.toString().slice(1);
+      this.#result = Math.sqrt(this.currentOperand);
       console.log(this.#result);
     } else {
-      this.#result = eval(this.currentOperation);
+      this.#result = eval(this.currentOperand);
+      console.log(typeof this.#result);
+      // let splitted = kene.split(/[+]/);
+      // console.log(splitted);
+      console.log(this.currentOperand.split(/[\+\-\/\*\^\%]/g));
     }
 
+    this.currentOperand = this.#result;
     console.log(this.#result);
   }
 
+  formatNumber(number) {
+    const floatNumber = parseFloat(number);
+    if (isNaN(floatNumber)) return;
+    return floatNumber.toLocaleString(navigator.language);
+  }
+
   updateDisplay() {
-    this.currentOperationInput.value = this.currentOperation;
+    // this.currentOperationInput.value = this.formatNumber(this.currentOperand);
+    this.currentOperationInput.value = this.currentOperand;
   }
 
   displayResult() {
-    this.currentOperation = this.#result;
-    this.currentOperationInput.value = this.currentOperation;
+    this.currentOperand = this.#result;
+    this.currentOperationInput.value = this.formatNumber(this.currentOperand);
   }
 }
 
