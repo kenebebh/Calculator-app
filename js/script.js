@@ -41,17 +41,6 @@ class CalculatorApp {
         // if theres no number before the user presses the square button, return
         if (this.currentOperand.split(/[\+\-\/\*\^\%]/g) == "") return;
         this.currentOperand += "**2";
-        // //Here, I create an array, I use this array to get the last value before you pressed the square operation, incase there isnt only one operand to be calculated
-        // let getNumber = this.currentOperand.toString().split(/[\+\-\/\*\^\%]/g);
-        // if (getNumber.length == "1") {
-        //   this.#result = this.currentOperand ** 2;
-        //   // this.displayResult();
-        // } else if (getNumber.length > "1") {
-        //   let numberToSquare = getNumber[getNumber.length - 1];
-        //   let numberSquared = numberToSquare ** 2;
-        //   console.log(numberSquared);
-        // }
-        // console.log(getNumber);
         break;
       case "√":
         this.currentOperand += operation;
